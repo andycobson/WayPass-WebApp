@@ -33,6 +33,7 @@ const AddAccount = () => {
 
         // Create json to send to service
         let prod = {
+            "accountId": "null",
             "serviceName": serviceName,
             "accountName": accountName,
             "hashedPassword": hashedPassword,

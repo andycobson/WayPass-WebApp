@@ -3,15 +3,20 @@ import { useState, useEffect } from 'react'
 import AccountService from '../services/AccountService'
 import AddAccount from './AddAccount'
 
-
 const AccountComponent = (props) => {
     const [accounts, setAccounts] = useState([]);
 
-    // useEffect is similar to componentDidMount
-    useEffect(() => {
+
+    const fetchAccounts = () => {
         AccountService.getAccounts().then((res) => {
             setAccounts(res.data);
-    })}, []);
+        });
+    }
+
+    // useEffect is similar to componentDidMount
+    useEffect(() => {
+        fetchAccounts();
+    }, []);
 
     return (
         <div>
@@ -21,7 +26,7 @@ const AccountComponent = (props) => {
                     <tr>
                         <th> Service</th>
                         <th> Username</th>
-                        <th> HashedPassword</th>
+                        <th> Password</th>
                     </tr>
                 </thead>
                 <tbody>

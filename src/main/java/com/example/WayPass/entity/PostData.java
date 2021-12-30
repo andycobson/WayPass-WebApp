@@ -4,16 +4,26 @@ import java.util.Objects;
 
 public class PostData {
 
+    private String accountId;
     private String serviceName;
     private String accountName;
     private String hashedPassword;
     private String pin;
 
-    public PostData(String serviceName, String accountName, String hashedPassword, String pin) {
+    public PostData(String accountId, String serviceName, String accountName, String hashedPassword, String pin) {
+        this.accountId = accountId;
         this.serviceName = serviceName;
         this.accountName = accountName;
         this.hashedPassword = hashedPassword;
         this.pin = pin;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getServiceName() {
@@ -51,7 +61,8 @@ public class PostData {
     @Override
     public String toString() {
         return "PostData{" +
-                "serviceName='" + serviceName + '\'' +
+                "accountId='" + accountId + '\'' +
+                ", serviceName='" + serviceName + '\'' +
                 ", accountName='" + accountName + '\'' +
                 ", hashedPassword='" + hashedPassword + '\'' +
                 ", pin='" + pin + '\'' +
@@ -63,11 +74,11 @@ public class PostData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PostData postData = (PostData) o;
-        return Objects.equals(getServiceName(), postData.getServiceName()) && Objects.equals(getAccountName(), postData.getAccountName()) && Objects.equals(getHashedPassword(), postData.getHashedPassword()) && Objects.equals(getPin(), postData.getPin());
+        return Objects.equals(getAccountId(), postData.getAccountId()) && Objects.equals(getServiceName(), postData.getServiceName()) && Objects.equals(getAccountName(), postData.getAccountName()) && Objects.equals(getHashedPassword(), postData.getHashedPassword()) && Objects.equals(getPin(), postData.getPin());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getServiceName(), getAccountName(), getHashedPassword(), getPin());
+        return Objects.hash(getAccountId(), getServiceName(), getAccountName(), getHashedPassword(), getPin());
     }
 }

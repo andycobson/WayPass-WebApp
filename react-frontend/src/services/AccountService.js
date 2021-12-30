@@ -11,6 +11,19 @@ class AccountService {
     addAccount(accdata){
         return axios.post("http://localhost:8083/api/v1/account",accdata);
     }
+
+    checkPin(accdata){
+        return axios.post("http://localhost:8083/api/v1/account/view",accdata);
+    }
+
+    updateAccount(accdata){
+        return axios.put("http://localhost:8083/api/v1/account", accdata);
+    }
+
+    deleteAccount(accid){
+        return axios.delete("http://localhost:8083/api/vi/account/" + accid);
+    }
 }
+
 
 export default new AccountService()

@@ -40,7 +40,26 @@ public class AccountController {
 
     @GetMapping("/accounts")
     public List<Account> getAll(){
-        return AccountRepository.getAllAccounts();
+        List<Account> temp = AccountRepository.getAllAccounts();
+        for (Account a : temp) {
+            a.setHashedPassword("hidden");
+        }
+        return temp;
+    }
+
+    @PostMapping("/account/view")
+    public String getPassword(@RequestBody PostData postData){
+        String password = "";
+        Account currentAccount = getAccount(postData.getAccountId());
+        try {
+            String hashedPassword = currentAccount.getHashedPassword();
+            String key = postData.getPin();
+            password = SecurityService.decrypt(hashedPassword, key);
+        }catch(Exception e){
+            e.printStackTrace();
+            password = "WP";
+        }
+        return password;
     }
 
     @DeleteMapping("/account/{id}")
@@ -48,8 +67,19 @@ public class AccountController {
         return AccountRepository.delete(accountId);
     }
 
-    @PutMapping("/account/{id}")
-    public String updateAccount(@PathVariable("id") String accountId, @RequestBody Account account){
+    @PutMapping("/account")
+    public String updateAccount(@RequestBody PostData postdata){
+        String password = postdata.getHashedPassword();
+        String accountId = postdata.getAccountId();;
+        String pin = postdata.getPin();
+        Account account;
+        try {
+            String hashedPassword = SecurityService.encrypt(password, pin);
+            account = new Account(postdata.getAccountId(), postdata.getServiceName(), postdata.getAccountName(), hashedPassword);
+        }catch(Exception e){
+            e.printStackTrace();
+            account = new Account(null, null, null, null);
+        }
         return AccountRepository.update(accountId,account);
     }
 

@@ -26,7 +26,9 @@ public class AccountRepository {
         return dynamoDBMapper.load(Account.class, accountId);
     }
 
-    public List<Account> getAllAccounts(){ return dynamoDBMapper.scan(Account.class, new DynamoDBScanExpression()); }
+    public List<Account> getAllAccounts() {
+        return dynamoDBMapper.scan(Account.class, new DynamoDBScanExpression());
+    }
 
     public String delete(String accountId){
         Account acc = dynamoDBMapper.load(Account.class, accountId);
