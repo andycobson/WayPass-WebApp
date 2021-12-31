@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Button from './Button'
 import AccountService from '../services/AccountService'
 
-const AddAccount = () => {
+const AddAccount = ({ addItem }) => {
     const [serviceName, setService] = useState('')
     const [accountName, setUsername] = useState('')
     const [hashedPassword, setPassword] = useState('')
@@ -41,7 +41,13 @@ const AddAccount = () => {
         }
 
         // Use service to send post json and to add the account
-        AccountService.addAccount(prod);
+        let accountProm = AccountService.addAccount(prod);
+
+        accountProm.then((res) => {
+            //setItem(res.data);
+            addItem(res.data);
+        })
+        
 
         // Clear the form text fields
         setService('')

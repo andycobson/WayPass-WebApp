@@ -2,7 +2,7 @@ import Button from './Button'
 import { useState } from 'react'
 import AccountService from '../services/AccountService'
 
-const Account = ({ account }) => {
+const Account = ({ account, removeItemHandler }) => {
 
     const [pin, setPin] = useState('')
     const [passVal, setPassVal] = useState('********')
@@ -12,9 +12,7 @@ const Account = ({ account }) => {
     const [hashedPassword, setPassword] = useState('')
     const [mode, setMode] = useState('standard');
 
-    const retreivePassword = (hdlType) => {
-        console.log(hdlType);
-        console.log(pin);
+    function retreivePassword(hdlType) {
         if(pin === ''){ return; }
 
         let prod = {
@@ -34,9 +32,8 @@ const Account = ({ account }) => {
         }).catch(err => { console.log(err) });
     }
 
-    const reflectEdit = (pass) => {
+    function reflectEdit(pass){
         setPassword(pass);
-        console.log(hashedPassword);
         if(pass === "WP" || pass === "NULL"){
             setPin("Wrong Pin");
         }else if(pass === ''){
@@ -46,7 +43,7 @@ const Account = ({ account }) => {
         }
     }
 
-    const handleView = (pass) => {
+    function handleView(pass){
         if(pass === "WP"){
             setPin("Wrong Pin");
         } else{
@@ -54,7 +51,7 @@ const Account = ({ account }) => {
         }
     }
 
-    const saveAccountChange = () => {
+    function saveAccountChange() {
         let prod = {
             "accountId": account.accountId,
             "serviceName": serviceName,
@@ -64,17 +61,20 @@ const Account = ({ account }) => {
         }
 
         AccountService.updateAccount(prod);
+        setPin('')
+        setMode("standard")
     }
 
-    const removeAccount = () => {
+    function removeAccount() {
         AccountService.deleteAccount(account.accountId);
+        removeItemHandler(account.accountId);
     }
 
     if (mode === "standard"){
         return (
             <tr>
-                <td>{account.serviceName}</td>
-                <td>{account.accountName}</td>
+                <td>{serviceName}</td>
+                <td>{accountName}</td>
                 <td>{passVal}</td>
                 <td><input type="text" placeholder="Enter Pin" value={pin} onChange={(e) => setPin(e.target.value)} /></td>
                 <td><Button color='steelblue' text="Edit" onClick={retreivePassword.bind(this, "Edit")} /><Button color='steelblue' text="View" onClick={retreivePassword.bind(this,"View")} /></td>

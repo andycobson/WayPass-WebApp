@@ -21,7 +21,7 @@ class AccountService {
     }
 
     deleteAccount(accid){
-        return axios.delete("http://localhost:8083/api/vi/account/" + accid);
+        return axios.delete("http://localhost:8083/api/v1/account/" + accid);
     }
 }
 
